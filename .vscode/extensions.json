@@ -4,6 +4,7 @@
 
 	// List of extensions which should be recommended for users of this workspace.
 	"recommendations": [
+		"ymotongpoo.licenser",
 		"streetsidesoftware.code-spell-checker",
 		"ms-python.python",
 		"mushan.vscode-paste-image",
