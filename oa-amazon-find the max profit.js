@@ -19,23 +19,32 @@ https://www.1point3acres.com/bbs/thread-661957-2-1.html
 */
 
 const findMaxProfit = (numSuppliers, inventory, order) => {
-    let supplierIdx = 0;
+    let supplierIdx = 1;
     let maxProfit = 0;
     inventory.sort(
         (a, b) => b - a
     );
-    while (order >= 0 && supplierIdx < inventory.length - 1) {
-        while (inventory[supplierIdx] === inventory[supplierIdx + 1]) {
+    inventory.push(0);
+    while (order >= 0 && supplierIdx < inventory.length) {
+        while (
+            supplierIdx < inventory.length
+            && inventory[supplierIdx - 1] === inventory[supplierIdx]
+            ) {
             supplierIdx++;
         }
-        let supplierMultiplier = supplierIdx + 1
-        let localCountToOrder = (inventory[supplierIdx] - inventory[supplierIdx + 1]) * supplierMultiplier;
-        let localProfit = inventory[supplierIdx];
+        if (inventory[supplierIdx - 1] === 0) {
+            break;
+        }
+
+        let supplierMultiplier = supplierIdx;
+        let diff = inventory[supplierIdx - 1] - inventory[supplierIdx];
+        let localCountToOrder = diff * supplierMultiplier;
+        let localProfit = inventory[supplierIdx - 1];
         if (order < localCountToOrder) {
             localCountToOrder = order;
         }
         order -= localCountToOrder;
-        while (localCountToOrder > 0 && localProfit >= inventory[supplierIdx + 1]) {
+        while (localCountToOrder > 0 && localProfit >= inventory[supplierIdx]) {
             const currentCountToTake = Math.min(supplierMultiplier, localCountToOrder);
             maxProfit += localProfit * currentCountToTake
             localProfit--;
@@ -47,5 +56,15 @@ const findMaxProfit = (numSuppliers, inventory, order) => {
     return maxProfit;
 }
 
-let res = findMaxProfit(3, [3, 2, 5], 4);
+let res;
+res = findMaxProfit(3, [3, 2, 5], 4);
+console.log(res);
+
+res = findMaxProfit(3, [5, 5, 5], 6);
+console.log(res);
+
+res = findMaxProfit(2, [0, 0], 6);
+console.log(res);
+
+res = findMaxProfit(2, [5, 0], 6);
 console.log(res);
